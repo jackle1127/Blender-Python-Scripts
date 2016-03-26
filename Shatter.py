@@ -2,7 +2,7 @@ import bpy
 import math
 import random
 
-NUM_OF_CUTS = 16
+NUM_OF_CUTS = 2
 def transform(pt, object, reversed):
     point = []
     point.append(pt[0])
@@ -193,30 +193,30 @@ for object in bpy.context.selected_objects:
                 topVertices = []
                 pointer = newVerticesMap[newVertices[0]][1]
                 topVertices.append(pointer)
-                edgeSet = set()
-                edgeSet.add(noShowEdges[newVertices[0]])
+                visitedEdgeSet = set()
+                visitedEdgeSet.add(noShowEdges[newVertices[0]])
                 while pointer != newVerticesMap[newVertices[2]][1]:
                     for edge in vertexEdgeDict[pointer]:
                         otherVert = otherVertex(edge, pointer)
-                        if otherVert in polygon.vertices and edge not in edgeSet:
+                        if otherVert in polygon.vertices and edge not in visitedEdgeSet:
                             pointer = otherVert
                             topVertices.append(pointer)
-                            edgeSet.add(edge)
+                            visitedEdgeSet.add(edge)
                             break
                 newPolygons.append((newVertices[0], topVertices, newVertices[2], normal))
                 
                 bottomVertices = []
                 pointer = newVerticesMap[newVertices[1]][1]
                 bottomVertices.append(pointer)
-                edgeSet = set()
-                edgeSet.add(noShowEdges[newVertices[1]])
+                visitedEdgeSet = set()
+                visitedEdgeSet.add(noShowEdges[newVertices[1]])
                 while pointer != newVerticesMap[newVertices[3]][1]:
                     for edge in vertexEdgeDict[pointer]:
                         otherVert = otherVertex(edge, pointer)
-                        if otherVert in polygon.vertices and edge not in edgeSet:
+                        if otherVert in polygon.vertices and edge not in visitedEdgeSet:
                             pointer = otherVert
                             bottomVertices.append(pointer)
-                            edgeSet.add(edge)
+                            visitedEdgeSet.add(edge)
                             break
                 newPolygons.append((newVertices[1], bottomVertices, newVertices[3], normal))
                 sliceTopEdges.append((newVertices[0], newVertices[2]))
